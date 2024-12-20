@@ -1,6 +1,7 @@
 package com.example.clientes.services;
 
 import com.example.clientes.dto.ClientDTO;
+import com.example.clientes.entities.Client;
 import com.example.clientes.repositories.ClientRepository;
 import com.example.clientes.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +25,21 @@ public class ClientService {
     public ClientDTO findById(Long id) {
         return new ClientDTO(clientRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Recurso não encontrado")));
+    }
+
+    @Transactional
+    public ClientDTO insert(ClientDTO dto) {
+        Client client = new Client();
+        copyDtoToEntity(dto, client);
+        client = clientRepository.save(client);
+        return new ClientDTO(client);
+    }
+
+    public void copyDtoToEntity(ClientDTO dto, Client client) {
+        client.setName(dto.getName());
+        client.setCpf(dto.getCpf());
+        client.setIncome(dto.getIncome());
+        client.setBirthDate(dto.getBirthDate());
+        client.setChildren(dto.getChildren());
     }
 }
