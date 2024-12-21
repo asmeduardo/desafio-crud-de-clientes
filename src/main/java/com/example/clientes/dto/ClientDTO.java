@@ -1,15 +1,19 @@
 package com.example.clientes.dto;
 
 import com.example.clientes.entities.Client;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
 
 import java.time.LocalDate;
 
 public class ClientDTO {
 
     private Long id;
+    @NotBlank(message = "Nome não pode ser vazio")
     private String name;
     private String cpf;
     private Double income;
+    @PastOrPresent(message = "A data de nascimento não pode ser no futuro")
     private LocalDate birthDate;
     private Integer children;
 
